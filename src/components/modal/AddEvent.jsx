@@ -13,7 +13,17 @@ const AddEvent = (props) => {
         setEventName(event.target.value)
     }
     const onCheckBoxChange = (text) => {
-       userInpHdlerFunction("123")("456")
+        // customOnChange(() => userHdler1("123"))
+        // console.log("-------------------")
+        // customOnChange(() => userHdler2) 
+        //---non arrow 
+        customOnChange(function () {
+            return userHdler1Fd("123")
+        })
+        console.log("-------------------")
+        customOnChange(function () {
+            return userHdler2Fd
+        })
         return (event) => {
             //for all day
 
@@ -36,25 +46,40 @@ const AddEvent = (props) => {
     }
 
     const customOnChange = (userHdler) => {
-        console.log("--------------HERE")
-        let currenEvent = "current event object"
-        return (firstParamOfUserInpHdlerFunction) => {
+        console.log("userhdler--------------HERE", userHdler)
+        let currentEvent = "event"
+        //userHdler() is = userHdler1("123") do cu phap return khi goi ham ()=>userHdler("123")
+        userHdler()(currentEvent)
 
-            userHdler(firstParamOfUserInpHdlerFunction)(currenEvent)
+        //userHdler is not arrow=userHdler1("123") thi 123 work, "event" not work
+        //userHdler is arrow= =(()=>userHdler1("123"))(currentEvent)
+        //userHdler(currentEvent)
+        //this is not work bc: 
 
-        }
+
     }
-    const userInpHdlerFunction = (firstParamOfUserInpHdlerFunction) => (currenEvent) => {
+    //not a function this is curried function
+    const userHdler1 = (firstParamOfUserInpHdlerFunction) => (currenEvent) => {
         console.log("My param: ", firstParamOfUserInpHdlerFunction)
         console.log("My Parent Param: ", currenEvent)
     }
+    const userHdler1Fd = function (firstParamOfUserInpHdlerFunction) {
+        return function (currenEvent) {
+            console.log("My param: ", firstParamOfUserInpHdlerFunction)
+            console.log("My Parent Param: ", currenEvent)
+        }
+    }
+    //this is normal hdler function
+    const userHdler2 = (currenEvent) => {
+
+        console.log("NORMAL: My Parent Param: ", currenEvent)
+    }
+    const userHdler2Fd = function (currenEvent) {
+
+        console.log("NORMAL: My Parent Param: ", currenEvent)
+    }
 
 
-    // const userInpHdlerFunctionNoParam = function (event) {
-    //     console.log("My NOPARAM function have event from parent ", event)
-
-
-    // }
 
 
 
