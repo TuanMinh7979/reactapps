@@ -2,13 +2,14 @@ import React from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const EventForm = (props) => {
-    const { modalId, title, closeModal, eventName, inputChange, checkbox, onCheckBoxChange, showtime, startDate, endDate, onInputChange, color, colors, hdlChange, eventType, buttonText, colorObj } = props;
+    console.log("........", props)
+    const { modalId, title, closeModal, eventName, inputChange, checkbox, onCheckBoxChange, showTime, startDate, endDate, onInputChange, color, colors, hdlChange, createEvent, buttonText, colorObj } = props;
     return (
-        <div><div id="add-event" style={{ color: 'black' }} className="modal" tabindex="-1">
+        <div><div id={modalId} style={{ color: 'black' }} className="modal" tabindex="-1">
             <div className="modal-dialog">
                 <div className="modal-content" >
                     <div className="modal-header">
-                        <h5 className="modal-title">Modal title</h5>
+                        <h5 className="modal-title">{title}</h5>
                         <button type="button" onClick={closeModal} className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -29,7 +30,7 @@ const EventForm = (props) => {
                                     value={checkbox}
                                     checked={checkbox}
 
-                                    onChange={onCheckBoxChange}
+                                    onChange={event => onCheckBoxChange()(event)}
                                 />
                                 <label htmlFor="" className="control-label">All day event?</label>
 
@@ -38,8 +39,21 @@ const EventForm = (props) => {
                             <div className="form-group ">
                                 <label htmlFor="" >start</label>
 
-                                {!showtime ? <div className="row col-12">  <DatePicker showTimeSelect timeFormat="p" timeIntervals={1} dateFormat="Pp" /></div> :
-                                    <div className="row col-12">  <DatePicker selected={startDate} onChange={onInputChange('startDate')} /></div>}
+                                {!showTime ?
+                                    <div className="row col-12">
+                                        <DatePicker
+                                            showTimeSelect
+                                            timeFormat="p"
+                                            timeIntervals={1}
+                                            dateFormat="Pp"
+                                            selected={startDate}
+                                            onChange={(event) => onInputChange('startdate')(event)} />
+                                    </div> :
+                                    <div className="row col-12">
+                                        <DatePicker
+                                            selected={startDate}
+                                            onChange={onInputChange('startdate')} />
+                                    </div>}
 
 
 
@@ -47,7 +61,21 @@ const EventForm = (props) => {
                             </div>
                             <div className="form-group ">
                                 <label htmlFor="" >end</label>
-                                <div className="row col-12">  <DatePicker showTimeSelect timeFormat="p" timeIntervals={1} dateFormat="Pp" /></div>
+                                {!showTime ?
+                                    <div className="row col-12">
+                                        <DatePicker
+                                            showTimeSelect
+                                            timeFormat="p"
+                                            timeIntervals={1}
+                                            dateFormat="Pp"
+                                            selected={endDate}
+                                            onChange={onInputChange('enddate')} />
+                                    </div> :
+                                    <div className="row col-12">
+                                        <DatePicker
+                                            selected={endDate}
+                                            onChange={onInputChange('enddate')} />
+                                    </div>}
 
 
 
@@ -56,12 +84,11 @@ const EventForm = (props) => {
                             <div className="form-group">
                                 <label htmlFor="" className="control-label">Color</label>
 
-                                <select className="form-control form-white" name="event-color" id="">
-                                    <option value="">Select color</option>
-                                    <option value="">Primary</option>
-                                    <option value="">Info</option>
-                                    <option value="">Danger</option>
-                                    <option value="">Success</option>
+                                <select className="form-control form-white" name="event-color" id="" onChange={hdlChange}>
+                                    <option key={color.toLowerCase()} value={color}>Select color</option>
+                                    {
+                                        colors.map(color => <option>{color}</option>)
+                                    }
                                 </select>
 
 
@@ -69,8 +96,8 @@ const EventForm = (props) => {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Close</button>
+                        <button type="button" className="btn btn-primary" onClick={createEvent} disabled={!eventName || !startDate || !endDate || !color}>Save</button>
                     </div>
                 </div>
             </div>
