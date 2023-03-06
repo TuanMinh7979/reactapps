@@ -2,7 +2,7 @@ import React from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const EventForm = (props) => {
-    console.log("........", props)
+
     const { modalId, title, closeModal, eventName, inputChange, checkbox, onCheckBoxChange, showTime, startDate, endDate, onInputChange, color, colors, hdlChange, createEvent, buttonText, colorObj } = props;
     return (
         <div><div id={modalId} style={{ color: 'black' }} className="modal" tabindex="-1">
